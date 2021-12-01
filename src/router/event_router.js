@@ -38,4 +38,23 @@ router.get('/userEvents', (req, res, next) => {
         next(error)
     }
 })
+router.post('/eventDelete', (req, res, next) => {
+    try {
+        modles.event.destroy({
+            where: {
+                id: req.body.id
+            }
+        }).then(data => {
+            res.json({
+                msg: '删除成功'
+            }).catch(err => {
+                res.json({
+                    msg: '删除失败'
+                })
+            })
+        })
+    } catch (error) {
+        next(error)
+    }
+})
 module.exports = router

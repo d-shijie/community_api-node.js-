@@ -21,6 +21,9 @@ const profile = require('./router/profile_router')
 const search = require('./router/search_router')
 const userDetail = require('./router/userDetail_router')
 const upload = require('./router/upload_router')
+const command=require('./router/command_router')
+const follow=require('./router/follow_router')
+const chat=require('./router/chat_router')
 app.use(eventRouter)
 // app.use(uploadRouter)
 app.use(register)
@@ -29,6 +32,9 @@ app.use(profile)
 app.use(search)
 app.use(userDetail)
 app.use(upload)
+app.use(command)
+app.use(follow)
+app.use(chat)
 app.use((err, req, res, next) => {
     if (err) {
         res.json({
@@ -37,6 +43,7 @@ app.use((err, req, res, next) => {
     }
 })
 
-app.listen(3000, () => {
+app.listen(3000, (req, res) => {
+
     console.log('http://localhost:3000');
 })
