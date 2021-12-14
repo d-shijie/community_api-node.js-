@@ -26,6 +26,10 @@ router.post('/userDetail', (req, res, next) => {
             if (user) {
                 user.update({
                     sex, age, desc
+                }).then(data => {
+                    res.json({
+                        msg: '更新成功'
+                    })
                 }).catch(err => {
                     res.json({
                         msg: err
