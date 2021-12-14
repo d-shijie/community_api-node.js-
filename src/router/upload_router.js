@@ -16,8 +16,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 const client = new OSS({
     region: 'oss-cn-hangzhou',
-    accessKeyId: 'LTAI5tFKDsjWhbhmRT9qdaMJ',
-    accessKeySecret: 'hcUJd1K41fYaxQImNNIuHMCTaavc8d',
+    accessKeyId: '',
+    accessKeySecret: '',
     bucket: 'dshijie',
 })
 router.post('/publish', upload.single('file'), async (req, res, next) => {
