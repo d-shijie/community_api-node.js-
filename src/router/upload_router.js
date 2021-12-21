@@ -30,13 +30,13 @@ router.post('/publish', upload.single('file'), async (req, res, next) => {
         data.content = req.body.content
         data.userId = req.body.userId
         data.category = req.body.category
-        modles.event.create(data).then(data => {
-            res.status(200).json(data)
-        }).catch(err => {
-            res.json({
-                msg: err
-            })
-        })
+        // modles.event.create(data).then(data => {
+        //     res.status(200).json(data)
+        // }).catch(err => {
+        //     res.json({
+        //         msg: err
+        //     })
+        // })
 
     } catch (error) {
         next(error)
@@ -54,7 +54,7 @@ router.post('/uploadAvator', upload.single('file'), async (req, res, next) => {
                 where: { username }
             }).then(data => {
                 data.headImg = headImg
-             
+
             })
     } catch (error) {
         next(error)
