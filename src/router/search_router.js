@@ -4,7 +4,7 @@ const router = express.Router()
 router.get('/search/:keywords', (req, res, next) => {
     try {
         const keywords = req.params.keywords
-
+        // 只支持标题的搜索 并且要完整的标题
         modles.event.findAndCountAll({
             where: { title: keywords }
         }).then(event => {

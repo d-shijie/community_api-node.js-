@@ -16,37 +16,52 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 const client = new OSS({
     region: 'oss-cn-hangzhou',
-    accessKeyId: '',
-    accessKeySecret: '',
+    accessKeyId: 'LTAI5tFKDsjWhbhmRT9qdaMJ',
+    accessKeySecret: 'hcUJd1K41fYaxQImNNIuHMCTaavc8d',
     bucket: 'dshijie',
 })
 router.post('/publish', upload.single('file'), async (req, res, next) => {
-    try {
-        let data = {}
-        let result = await client.put(req.file.filename, req.file.path)
-        data.imgUrl = result.url;
-        data.name = req.body.name
-        data.title = req.body.title
-        data.content = req.body.content
-        data.userId = req.body.userId
-        data.category = req.body.category
-        // modles.event.create(data).then(data => {
-        //     res.status(200).json(data)
-        // }).catch(err => {
-        //     res.json({
-        //         msg: err
-        //     })
-        // })
+    let data = {}
+    let { name } = req.body
+    modles.User.findOne({
+        where: {
+            username: name
+        }
+    }).then(async user => {
+        if (user) {
+            data.userId = user.id
+            if (req.file) {
+                let result = await client.put(req.file.filename, req.file.path)
+                data.imgUrl = result.url;
+            }
+            data.name = req.body.name
+            data.title = req.body.title
+            data.content = req.body.content
+            data.category = req.body.category
+            modles.event.create(data).then(data => {
+                res.status(200).json({
+                    msg: '上传成功'
+                })
+            }).catch(err => {
+                res.json({
+                    msg: err
+                })
+            })
+        } else {
+            res.json({
+                msg: '用户不存在'
+            })
+        }
+    })
 
-    } catch (error) {
-        next(error)
-    }
+
 
 
 })
 router.post('/uploadAvator', upload.single('file'), async (req, res, next) => {
     try {
         let username = req.body.username
+        console.log(req.body, req.file);
         let result = await client.put(req.file.filename, req.file.path)
         let headImg = result.url
         modles.UserDetail.update({ headImg },
