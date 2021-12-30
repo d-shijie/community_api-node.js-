@@ -23,15 +23,38 @@ router.post('/command', (req, res, next) => {
 })
 router.get('/command', (req, res, next) => {
     try {
-          modles.Command.findAndCountAll({
-              where:{eventId:req.query.id}
-          }).then(data=>{
-              res.json(data)
-          }).catch(err=>{
-              res.json({
-                  msg:err
-              })
-          })
+        modles.Command.findAndCountAll({
+            where: { eventId: req.query.id }
+        }).then(data => {
+            res.json(data)
+        }).catch(err => {
+            res.json({
+                msg: err
+            })
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+router.post('/deleteCommand', (req, res, next) => {
+    try {
+        console.log(req.body.id);
+        let { id } = req.body
+        modles.Command.destroy({
+            where: {
+                id
+            }
+        }).then(data => {
+            res.json({
+                msg: '删除成功',
+                success: true
+            })
+        }).catch(err => {
+            res.json({
+                msg: '删除失败',
+                success: false
+            })
+        })
     } catch (error) {
         next(error)
     }

@@ -135,4 +135,30 @@ router.post('/updateEvent', upload.single('file'), async (req, res, next) => {
         next(error)
     }
 })
+router.get('/searchEvent', (req, res, next) => {
+    let { title } = req.query
+    modles.event.findAndCountAll({
+        where: {
+            title
+        }
+    }).then(data => {
+        if (data.count != 0) {
+            res.json({
+                data,
+                success: true,
+                msg: '搜索成功'
+            })
+        } else {
+            res.json({
+                msg: '无搜索结果',
+                success: false
+            })
+        }
+    }).catch(err => {
+        res.json({
+            msg: err,
+            success: false
+        })
+    })
+})
 module.exports = router
